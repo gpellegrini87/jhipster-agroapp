@@ -1,0 +1,21 @@
+{
+    "agroappApp": {
+        "cliente": {
+            "home": {
+                "title": "Clientes",
+                "createLabel": "Skapa en ny Cliente",
+                "createOrEditLabel": "Skapa eller ändra en Cliente"
+            },
+            "created": "En ny Cliente är skapad med id {{ param }}",
+            "updated": "En Cliente är uppdaterad med id  {{ param }}",
+            "deleted": "En Cliente är borttagen med id  {{ param }}",
+            "delete": {
+                "question": "Är du säker på att du vill ta bort Cliente {{ id }}?"
+            },
+            "detail": {
+                "title": "Cliente"
+            },
+            "nombre": "Nombre"
+        }
+    }
+}

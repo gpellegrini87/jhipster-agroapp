@@ -1,0 +1,21 @@
+{
+    "agroappApp": {
+        "proveedor": {
+            "home": {
+                "title": "Proveedors",
+                "createLabel": "Crear nuevo Proveedor",
+                "createOrEditLabel": "Crear o editar Proveedor"
+            },
+            "created": "Un nuevo Proveedor ha sido creado con el identificador {{ param }}",
+            "updated": "Un Proveedor ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Proveedor ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Proveedor {{ id }}?"
+            },
+            "detail": {
+                "title": "Proveedor"
+            },
+            "nombre": "Nombre"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "agroappApp": {
+        "pedido": {
+            "home": {
+                "title": "Pedidos",
+                "createLabel": "Skapa en ny Pedido",
+                "createOrEditLabel": "Skapa eller ändra en Pedido"
+            },
+            "created": "En ny Pedido är skapad med id {{ param }}",
+            "updated": "En Pedido är uppdaterad med id  {{ param }}",
+            "deleted": "En Pedido är borttagen med id  {{ param }}",
+            "delete": {
+                "question": "Är du säker på att du vill ta bort Pedido {{ id }}?"
+            },
+            "detail": {
+                "title": "Pedido"
+            },
+            "nombre": "Nombre",
+            "descripcion": "Descripcion",
+            "cliente": "Cliente",
+            "presupuesto": "Presupuesto"
+        }
+    }
+}
