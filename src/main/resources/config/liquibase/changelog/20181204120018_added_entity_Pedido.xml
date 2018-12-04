@@ -29,9 +29,11 @@
             <column name="descripcion" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="cliente_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_pedido_cliente_id" />
+                <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

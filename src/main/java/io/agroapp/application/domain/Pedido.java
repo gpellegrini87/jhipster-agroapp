@@ -1,6 +1,7 @@
 package io.agroapp.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -33,12 +34,13 @@ public class Pedido implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToOne    @JoinColumn(unique = true)
-    private Cliente cliente;
-
     @OneToMany(mappedBy = "pedido")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Presupuesto> presupuestos = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private Cliente cliente;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -74,19 +76,6 @@ public class Pedido implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public Pedido cliente(Cliente cliente) {
-        this.cliente = cliente;
-        return this;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     public Set<Presupuesto> getPresupuestos() {
         return presupuestos;
     }
@@ -110,6 +99,19 @@ public class Pedido implements Serializable {
 
     public void setPresupuestos(Set<Presupuesto> presupuestos) {
         this.presupuestos = presupuestos;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public Pedido cliente(Cliente cliente) {
+        this.cliente = cliente;
+        return this;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

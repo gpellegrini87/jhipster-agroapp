@@ -28,7 +28,7 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="agroappApp.pedido.cliente" for="field_cliente">Cliente</label>
-                    <select class="form-control" id="field_cliente" name="cliente" [(ngModel)]="pedido.cliente">
+                    <select class="form-control" id="field_cliente" name="cliente" [(ngModel)]="pedido.cliente" >
                         <option [ngValue]="null"></option>
                         <option [ngValue]="clienteOption.id === pedido.cliente?.id ? pedido.cliente : clienteOption" *ngFor="let clienteOption of clientes; trackBy: trackClienteById">{{clienteOption.id}}</option>
                     </select>
