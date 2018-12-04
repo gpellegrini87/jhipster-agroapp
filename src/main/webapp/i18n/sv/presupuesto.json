@@ -1,0 +1,23 @@
+{
+    "agroappApp": {
+        "presupuesto": {
+            "home": {
+                "title": "Presupuestos",
+                "createLabel": "Skapa en ny Presupuesto",
+                "createOrEditLabel": "Skapa eller ändra en Presupuesto"
+            },
+            "created": "En ny Presupuesto är skapad med id {{ param }}",
+            "updated": "En Presupuesto är uppdaterad med id  {{ param }}",
+            "deleted": "En Presupuesto är borttagen med id  {{ param }}",
+            "delete": {
+                "question": "Är du säker på att du vill ta bort Presupuesto {{ id }}?"
+            },
+            "detail": {
+                "title": "Presupuesto"
+            },
+            "nombre": "Nombre",
+            "pedido": "Pedido",
+            "proveedor": "Proveedor"
+        }
+    }
+}

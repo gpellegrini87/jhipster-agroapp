@@ -1,0 +1,21 @@
+{
+    "agroappApp": {
+        "proveedor": {
+            "home": {
+                "title": "Proveedors",
+                "createLabel": "Skapa en ny Proveedor",
+                "createOrEditLabel": "Skapa eller ändra en Proveedor"
+            },
+            "created": "En ny Proveedor är skapad med id {{ param }}",
+            "updated": "En Proveedor är uppdaterad med id  {{ param }}",
+            "deleted": "En Proveedor är borttagen med id  {{ param }}",
+            "delete": {
+                "question": "Är du säker på att du vill ta bort Proveedor {{ id }}?"
+            },
+            "detail": {
+                "title": "Proveedor"
+            },
+            "nombre": "Nombre"
+        }
+    }
+}

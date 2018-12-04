@@ -1,0 +1,41 @@
+{
+    "name": "Pedido",
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "descripcion",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cliente",
+            "otherEntityName": "cliente",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "pedido"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "presupuesto",
+            "otherEntityName": "presupuesto",
+            "otherEntityRelationshipName": "pedido"
+        }
+    ],
+    "changelogDate": "20181204120018",
+    "entityTableName": "pedido",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
