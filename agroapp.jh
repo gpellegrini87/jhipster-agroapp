@@ -1,0 +1,32 @@
+entity Proveedor {
+	nombre String required
+}
+
+entity Cliente {
+	nombre String required
+}
+
+entity Pedido {
+	nombre String required,
+    descripcion String
+}
+
+entity Presupuesto {
+	nombre String required
+}
+
+relationship OneToOne {
+	Pedido{cliente} to Cliente
+}
+
+relationship OneToOne {
+	Presupuesto{proveedor} to Proveedor
+}
+
+relationship OneToMany {
+	Pedido{presupuesto} to Presupuesto
+}
+
+paginate Pedido, Presupuesto, Cliente, Proveedor with pagination
+
+service all with serviceImpl
