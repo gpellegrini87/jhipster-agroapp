@@ -17,8 +17,8 @@
             },
             "nombre": "Nombre",
             "descripcion": "Descripcion",
-            "cliente": "Cliente",
-            "presupuesto": "Presupuesto"
+            "presupuesto": "Presupuesto",
+            "cliente": "Cliente"
         }
     }
 }

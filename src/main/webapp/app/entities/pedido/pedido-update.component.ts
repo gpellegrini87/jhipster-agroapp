@@ -31,18 +31,9 @@ export class PedidoUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ pedido }) => {
             this.pedido = pedido;
         });
-        this.clienteService.query({ filter: 'pedido-is-null' }).subscribe(
+        this.clienteService.query().subscribe(
             (res: HttpResponse<ICliente[]>) => {
-                if (!this.pedido.cliente || !this.pedido.cliente.id) {
-                    this.clientes = res.body;
-                } else {
-                    this.clienteService.find(this.pedido.cliente.id).subscribe(
-                        (subRes: HttpResponse<ICliente>) => {
-                            this.clientes = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
+                this.clientes = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
