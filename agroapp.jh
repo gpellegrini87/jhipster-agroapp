@@ -15,7 +15,7 @@ entity Presupuesto {
 	nombre String required
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Pedido{cliente} to Cliente
 }
 
