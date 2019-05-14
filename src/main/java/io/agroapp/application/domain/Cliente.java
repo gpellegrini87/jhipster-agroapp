@@ -1,5 +1,6 @@
 package io.agroapp.application.domain;
 
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -55,19 +56,15 @@ public class Cliente implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Cliente)) {
             return false;
         }
-        Cliente cliente = (Cliente) o;
-        if (cliente.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), cliente.getId());
+        return id != null && id.equals(((Cliente) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

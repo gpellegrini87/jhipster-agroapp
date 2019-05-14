@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
-import { IPedido } from 'app/shared/model/pedido.model';
+import { IPedido, Pedido } from 'app/shared/model/pedido.model';
 import { PedidoService } from './pedido.service';
 import { ICliente } from 'app/shared/model/cliente.model';
 import { ClienteService } from 'app/entities/cliente';
@@ -19,24 +20,43 @@ export class PedidoUpdateComponent implements OnInit {
 
     clientes: ICliente[];
 
+    editForm = this.fb.group({
+        id: [],
+        nombre: [null, [Validators.required]],
+        descripcion: [],
+        cliente: []
+    });
+
     constructor(
-        private jhiAlertService: JhiAlertService,
-        private pedidoService: PedidoService,
-        private clienteService: ClienteService,
-        private activatedRoute: ActivatedRoute
+        protected jhiAlertService: JhiAlertService,
+        protected pedidoService: PedidoService,
+        protected clienteService: ClienteService,
+        protected activatedRoute: ActivatedRoute,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ pedido }) => {
+            this.updateForm(pedido);
             this.pedido = pedido;
         });
-        this.clienteService.query().subscribe(
-            (res: HttpResponse<ICliente[]>) => {
-                this.clientes = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.clienteService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<ICliente[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICliente[]>) => response.body)
+            )
+            .subscribe((res: ICliente[]) => (this.clientes = res), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    updateForm(pedido: IPedido) {
+        this.editForm.patchValue({
+            id: pedido.id,
+            nombre: pedido.nombre,
+            descripcion: pedido.descripcion,
+            cliente: pedido.cliente
+        });
     }
 
     previousState() {
@@ -45,27 +65,38 @@ export class PedidoUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.pedido.id !== undefined) {
-            this.subscribeToSaveResponse(this.pedidoService.update(this.pedido));
+        const pedido = this.createFromForm();
+        if (pedido.id !== undefined) {
+            this.subscribeToSaveResponse(this.pedidoService.update(pedido));
         } else {
-            this.subscribeToSaveResponse(this.pedidoService.create(this.pedido));
+            this.subscribeToSaveResponse(this.pedidoService.create(pedido));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IPedido>>) {
+    private createFromForm(): IPedido {
+        const entity = {
+            ...new Pedido(),
+            id: this.editForm.get(['id']).value,
+            nombre: this.editForm.get(['nombre']).value,
+            descripcion: this.editForm.get(['descripcion']).value,
+            cliente: this.editForm.get(['cliente']).value
+        };
+        return entity;
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IPedido>>) {
         result.subscribe((res: HttpResponse<IPedido>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
-
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 

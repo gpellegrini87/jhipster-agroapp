@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { ICliente } from 'app/shared/model/cliente.model';
-import { Principal } from 'app/core';
+import { AccountService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { ClienteService } from './cliente.service';
@@ -23,7 +24,6 @@ export class ClienteComponent implements OnInit, OnDestroy {
     routeData: any;
     links: any;
     totalItems: any;
-    queryCount: any;
     itemsPerPage: any;
     page: any;
     predicate: any;
@@ -31,13 +31,13 @@ export class ClienteComponent implements OnInit, OnDestroy {
     reverse: any;
 
     constructor(
-        private clienteService: ClienteService,
-        private parseLinks: JhiParseLinks,
-        private jhiAlertService: JhiAlertService,
-        private principal: Principal,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private eventManager: JhiEventManager
+        protected clienteService: ClienteService,
+        protected parseLinks: JhiParseLinks,
+        protected jhiAlertService: JhiAlertService,
+        protected accountService: AccountService,
+        protected activatedRoute: ActivatedRoute,
+        protected router: Router,
+        protected eventManager: JhiEventManager
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -93,7 +93,7 @@ export class ClienteComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then(account => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInClientes();
@@ -119,14 +119,13 @@ export class ClienteComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private paginateClientes(data: ICliente[], headers: HttpHeaders) {
+    protected paginateClientes(data: ICliente[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.queryCount = this.totalItems;
         this.clientes = data;
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 }

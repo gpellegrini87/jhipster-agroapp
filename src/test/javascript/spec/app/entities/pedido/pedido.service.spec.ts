@@ -13,10 +13,12 @@ describe('Service Tests', () => {
         let service: PedidoService;
         let httpMock: HttpTestingController;
         let elemDefault: IPedido;
+        let expectedResult;
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [HttpClientTestingModule]
             });
+            expectedResult = {};
             injector = getTestBed();
             service = injector.get(PedidoService);
             httpMock = injector.get(HttpTestingController);
@@ -24,16 +26,17 @@ describe('Service Tests', () => {
             elemDefault = new Pedido(0, 'AAAAAAA', 'AAAAAAA');
         });
 
-        describe('Service methods', async () => {
+        describe('Service methods', () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign({}, elemDefault);
                 service
                     .find(123)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: elemDefault }));
+                    .subscribe(resp => (expectedResult = resp));
 
                 const req = httpMock.expectOne({ method: 'GET' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: elemDefault });
             });
 
             it('should create a Pedido', async () => {
@@ -47,9 +50,10 @@ describe('Service Tests', () => {
                 service
                     .create(new Pedido(null))
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                    .subscribe(resp => (expectedResult = resp));
                 const req = httpMock.expectOne({ method: 'POST' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: expected });
             });
 
             it('should update a Pedido', async () => {
@@ -65,9 +69,10 @@ describe('Service Tests', () => {
                 service
                     .update(expected)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                    .subscribe(resp => (expectedResult = resp));
                 const req = httpMock.expectOne({ method: 'PUT' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: expected });
             });
 
             it('should return a list of Pedido', async () => {
@@ -85,17 +90,19 @@ describe('Service Tests', () => {
                         take(1),
                         map(resp => resp.body)
                     )
-                    .subscribe(body => expect(body).toContainEqual(expected));
+                    .subscribe(body => (expectedResult = body));
                 const req = httpMock.expectOne({ method: 'GET' });
-                req.flush(JSON.stringify([returnedFromService]));
+                req.flush([returnedFromService]);
                 httpMock.verify();
+                expect(expectedResult).toContainEqual(expected);
             });
 
             it('should delete a Pedido', async () => {
-                const rxPromise = service.delete(123).subscribe(resp => expect(resp.ok));
+                const rxPromise = service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
                 const req = httpMock.expectOne({ method: 'DELETE' });
                 req.flush({ status: 200 });
+                expect(expectedResult);
             });
         });
 

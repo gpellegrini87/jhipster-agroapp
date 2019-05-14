@@ -10,7 +10,7 @@ import { IPedido } from 'app/shared/model/pedido.model';
 export class PedidoDetailComponent implements OnInit {
     pedido: IPedido;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ pedido }) => {

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Presupuesto.
+ * Service Implementation for managing {@link Presupuesto}.
  */
 @Service
 @Transactional
@@ -31,8 +31,8 @@ public class PresupuestoServiceImpl implements PresupuestoService {
     /**
      * Save a presupuesto.
      *
-     * @param presupuesto the entity to save
-     * @return the persisted entity
+     * @param presupuesto the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Presupuesto save(Presupuesto presupuesto) {
@@ -43,8 +43,8 @@ public class PresupuestoServiceImpl implements PresupuestoService {
     /**
      * Get all the presupuestos.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -57,8 +57,8 @@ public class PresupuestoServiceImpl implements PresupuestoService {
     /**
      * Get one presupuesto by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class PresupuestoServiceImpl implements PresupuestoService {
     /**
      * Delete the presupuesto by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

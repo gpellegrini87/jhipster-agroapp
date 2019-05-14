@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IProveedor[]>;
 export class ProveedorService {
     public resourceUrl = SERVER_API_URL + 'api/proveedors';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(proveedor: IProveedor): Observable<EntityResponseType> {
         return this.http.post<IProveedor>(this.resourceUrl, proveedor, { observe: 'response' });

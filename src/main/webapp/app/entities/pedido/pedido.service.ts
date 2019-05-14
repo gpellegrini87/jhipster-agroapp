@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IPedido[]>;
 export class PedidoService {
     public resourceUrl = SERVER_API_URL + 'api/pedidos';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(pedido: IPedido): Observable<EntityResponseType> {
         return this.http.post<IPedido>(this.resourceUrl, pedido, { observe: 'response' });

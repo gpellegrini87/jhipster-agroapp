@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Proveedor.
+ * Service Implementation for managing {@link Proveedor}.
  */
 @Service
 @Transactional
@@ -31,8 +31,8 @@ public class ProveedorServiceImpl implements ProveedorService {
     /**
      * Save a proveedor.
      *
-     * @param proveedor the entity to save
-     * @return the persisted entity
+     * @param proveedor the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Proveedor save(Proveedor proveedor) {
@@ -43,8 +43,8 @@ public class ProveedorServiceImpl implements ProveedorService {
     /**
      * Get all the proveedors.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -57,8 +57,8 @@ public class ProveedorServiceImpl implements ProveedorService {
     /**
      * Get one proveedor by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class ProveedorServiceImpl implements ProveedorService {
     /**
      * Delete the proveedor by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

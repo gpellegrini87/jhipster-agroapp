@@ -1,5 +1,6 @@
 package io.agroapp.application.domain;
 
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -55,19 +56,15 @@ public class Proveedor implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Proveedor)) {
             return false;
         }
-        Proveedor proveedor = (Proveedor) o;
-        if (proveedor.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), proveedor.getId());
+        return id != null && id.equals(((Proveedor) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

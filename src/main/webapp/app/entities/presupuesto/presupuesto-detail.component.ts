@@ -10,7 +10,7 @@ import { IPresupuesto } from 'app/shared/model/presupuesto.model';
 export class PresupuestoDetailComponent implements OnInit {
     presupuesto: IPresupuesto;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ presupuesto }) => {

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { IProveedor } from 'app/shared/model/proveedor.model';
+import { IProveedor, Proveedor } from 'app/shared/model/proveedor.model';
 import { ProveedorService } from './proveedor.service';
 
 @Component({
@@ -14,12 +14,25 @@ export class ProveedorUpdateComponent implements OnInit {
     proveedor: IProveedor;
     isSaving: boolean;
 
-    constructor(private proveedorService: ProveedorService, private activatedRoute: ActivatedRoute) {}
+    editForm = this.fb.group({
+        id: [],
+        nombre: [null, [Validators.required]]
+    });
+
+    constructor(protected proveedorService: ProveedorService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ proveedor }) => {
+            this.updateForm(proveedor);
             this.proveedor = proveedor;
+        });
+    }
+
+    updateForm(proveedor: IProveedor) {
+        this.editForm.patchValue({
+            id: proveedor.id,
+            nombre: proveedor.nombre
         });
     }
 
@@ -29,23 +42,33 @@ export class ProveedorUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.proveedor.id !== undefined) {
-            this.subscribeToSaveResponse(this.proveedorService.update(this.proveedor));
+        const proveedor = this.createFromForm();
+        if (proveedor.id !== undefined) {
+            this.subscribeToSaveResponse(this.proveedorService.update(proveedor));
         } else {
-            this.subscribeToSaveResponse(this.proveedorService.create(this.proveedor));
+            this.subscribeToSaveResponse(this.proveedorService.create(proveedor));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IProveedor>>) {
+    private createFromForm(): IProveedor {
+        const entity = {
+            ...new Proveedor(),
+            id: this.editForm.get(['id']).value,
+            nombre: this.editForm.get(['nombre']).value
+        };
+        return entity;
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IProveedor>>) {
         result.subscribe((res: HttpResponse<IProveedor>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 }

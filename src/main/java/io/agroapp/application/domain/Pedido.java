@@ -1,5 +1,6 @@
 package io.agroapp.application.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
@@ -37,8 +38,9 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy = "pedido")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Presupuesto> presupuestos = new HashSet<>();
+
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("pedidos")
     private Cliente cliente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -120,19 +122,15 @@ public class Pedido implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pedido)) {
             return false;
         }
-        Pedido pedido = (Pedido) o;
-        if (pedido.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), pedido.getId());
+        return id != null && id.equals(((Pedido) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

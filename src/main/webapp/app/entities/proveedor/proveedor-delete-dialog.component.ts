@@ -14,7 +14,11 @@ import { ProveedorService } from './proveedor.service';
 export class ProveedorDeleteDialogComponent {
     proveedor: IProveedor;
 
-    constructor(private proveedorService: ProveedorService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(
+        protected proveedorService: ProveedorService,
+        public activeModal: NgbActiveModal,
+        protected eventManager: JhiEventManager
+    ) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +40,9 @@ export class ProveedorDeleteDialogComponent {
     template: ''
 })
 export class ProveedorDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ proveedor }) => {
@@ -47,11 +51,11 @@ export class ProveedorDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.proveedor = proveedor;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/proveedor', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/proveedor', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

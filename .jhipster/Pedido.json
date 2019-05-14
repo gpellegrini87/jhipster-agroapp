@@ -16,14 +16,15 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "presupuesto",
             "otherEntityName": "presupuesto",
-            "otherEntityRelationshipName": "pedido"
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "presupuesto"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "cliente",
             "otherEntityName": "cliente",
+            "otherEntityRelationshipName": "pedido",
+            "relationshipName": "cliente",
             "otherEntityField": "id"
         }
     ],

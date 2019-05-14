@@ -1,5 +1,5 @@
-import { IPedido } from 'app/shared/model//pedido.model';
-import { IProveedor } from 'app/shared/model//proveedor.model';
+import { IPedido } from 'app/shared/model/pedido.model';
+import { IProveedor } from 'app/shared/model/proveedor.model';
 
 export interface IPresupuesto {
     id?: number;

@@ -10,7 +10,7 @@ import { ICliente } from 'app/shared/model/cliente.model';
 export class ClienteDetailComponent implements OnInit {
     cliente: ICliente;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ cliente }) => {
