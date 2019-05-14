@@ -17,7 +17,7 @@ import { IPresupuesto } from 'app/shared/model/presupuesto.model';
 export class PresupuestoResolve implements Resolve<IPresupuesto> {
     constructor(private service: PresupuestoService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Presupuesto> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IPresupuesto> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class PresupuestoResolve implements Resolve<IPresupuesto> {
 
 export const presupuestoRoute: Routes = [
     {
-        path: 'presupuesto',
+        path: '',
         component: PresupuestoComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const presupuestoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'presupuesto/:id/view',
+        path: ':id/view',
         component: PresupuestoDetailComponent,
         resolve: {
             presupuesto: PresupuestoResolve
@@ -56,7 +56,7 @@ export const presupuestoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'presupuesto/new',
+        path: 'new',
         component: PresupuestoUpdateComponent,
         resolve: {
             presupuesto: PresupuestoResolve
@@ -68,7 +68,7 @@ export const presupuestoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'presupuesto/:id/edit',
+        path: ':id/edit',
         component: PresupuestoUpdateComponent,
         resolve: {
             presupuesto: PresupuestoResolve
@@ -83,7 +83,7 @@ export const presupuestoRoute: Routes = [
 
 export const presupuestoPopupRoute: Routes = [
     {
-        path: 'presupuesto/:id/delete',
+        path: ':id/delete',
         component: PresupuestoDeletePopupComponent,
         resolve: {
             presupuesto: PresupuestoResolve

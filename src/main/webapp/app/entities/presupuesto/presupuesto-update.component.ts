@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
-import { IPresupuesto } from 'app/shared/model/presupuesto.model';
+import { IPresupuesto, Presupuesto } from 'app/shared/model/presupuesto.model';
 import { PresupuestoService } from './presupuesto.service';
 import { IPedido } from 'app/shared/model/pedido.model';
 import { PedidoService } from 'app/entities/pedido';
@@ -23,40 +24,69 @@ export class PresupuestoUpdateComponent implements OnInit {
 
     proveedors: IProveedor[];
 
+    editForm = this.fb.group({
+        id: [],
+        nombre: [null, [Validators.required]],
+        pedido: [],
+        proveedor: []
+    });
+
     constructor(
-        private jhiAlertService: JhiAlertService,
-        private presupuestoService: PresupuestoService,
-        private pedidoService: PedidoService,
-        private proveedorService: ProveedorService,
-        private activatedRoute: ActivatedRoute
+        protected jhiAlertService: JhiAlertService,
+        protected presupuestoService: PresupuestoService,
+        protected pedidoService: PedidoService,
+        protected proveedorService: ProveedorService,
+        protected activatedRoute: ActivatedRoute,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ presupuesto }) => {
+            this.updateForm(presupuesto);
             this.presupuesto = presupuesto;
         });
-        this.pedidoService.query().subscribe(
-            (res: HttpResponse<IPedido[]>) => {
-                this.pedidos = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.proveedorService.query({ filter: 'presupuesto-is-null' }).subscribe(
-            (res: HttpResponse<IProveedor[]>) => {
-                if (!this.presupuesto.proveedor || !this.presupuesto.proveedor.id) {
-                    this.proveedors = res.body;
-                } else {
-                    this.proveedorService.find(this.presupuesto.proveedor.id).subscribe(
-                        (subRes: HttpResponse<IProveedor>) => {
-                            this.proveedors = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.pedidoService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IPedido[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IPedido[]>) => response.body)
+            )
+            .subscribe((res: IPedido[]) => (this.pedidos = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.proveedorService
+            .query({ filter: 'presupuesto-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IProveedor[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IProveedor[]>) => response.body)
+            )
+            .subscribe(
+                (res: IProveedor[]) => {
+                    if (!this.presupuesto.proveedor || !this.presupuesto.proveedor.id) {
+                        this.proveedors = res;
+                    } else {
+                        this.proveedorService
+                            .find(this.presupuesto.proveedor.id)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IProveedor>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IProveedor>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IProveedor) => (this.proveedors = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    updateForm(presupuesto: IPresupuesto) {
+        this.editForm.patchValue({
+            id: presupuesto.id,
+            nombre: presupuesto.nombre,
+            pedido: presupuesto.pedido,
+            proveedor: presupuesto.proveedor
+        });
     }
 
     previousState() {
@@ -65,27 +95,38 @@ export class PresupuestoUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.presupuesto.id !== undefined) {
-            this.subscribeToSaveResponse(this.presupuestoService.update(this.presupuesto));
+        const presupuesto = this.createFromForm();
+        if (presupuesto.id !== undefined) {
+            this.subscribeToSaveResponse(this.presupuestoService.update(presupuesto));
         } else {
-            this.subscribeToSaveResponse(this.presupuestoService.create(this.presupuesto));
+            this.subscribeToSaveResponse(this.presupuestoService.create(presupuesto));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IPresupuesto>>) {
+    private createFromForm(): IPresupuesto {
+        const entity = {
+            ...new Presupuesto(),
+            id: this.editForm.get(['id']).value,
+            nombre: this.editForm.get(['nombre']).value,
+            pedido: this.editForm.get(['pedido']).value,
+            proveedor: this.editForm.get(['proveedor']).value
+        };
+        return entity;
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IPresupuesto>>) {
         result.subscribe((res: HttpResponse<IPresupuesto>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
-
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 

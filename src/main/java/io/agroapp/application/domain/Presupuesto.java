@@ -1,5 +1,6 @@
 package io.agroapp.application.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,7 +33,8 @@ public class Presupuesto implements Serializable {
     @JsonIgnoreProperties("presupuestos")
     private Pedido pedido;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private Proveedor proveedor;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -89,19 +91,15 @@ public class Presupuesto implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Presupuesto)) {
             return false;
         }
-        Presupuesto presupuesto = (Presupuesto) o;
-        if (presupuesto.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), presupuesto.getId());
+        return id != null && id.equals(((Presupuesto) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

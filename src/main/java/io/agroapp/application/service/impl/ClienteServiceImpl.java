@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Cliente.
+ * Service Implementation for managing {@link Cliente}.
  */
 @Service
 @Transactional
@@ -31,8 +31,8 @@ public class ClienteServiceImpl implements ClienteService {
     /**
      * Save a cliente.
      *
-     * @param cliente the entity to save
-     * @return the persisted entity
+     * @param cliente the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Cliente save(Cliente cliente) {
@@ -43,8 +43,8 @@ public class ClienteServiceImpl implements ClienteService {
     /**
      * Get all the clientes.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -57,8 +57,8 @@ public class ClienteServiceImpl implements ClienteService {
     /**
      * Get one cliente by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class ClienteServiceImpl implements ClienteService {
     /**
      * Delete the cliente by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

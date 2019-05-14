@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { ICliente } from 'app/shared/model/cliente.model';
+import { ICliente, Cliente } from 'app/shared/model/cliente.model';
 import { ClienteService } from './cliente.service';
 
 @Component({
@@ -14,12 +14,25 @@ export class ClienteUpdateComponent implements OnInit {
     cliente: ICliente;
     isSaving: boolean;
 
-    constructor(private clienteService: ClienteService, private activatedRoute: ActivatedRoute) {}
+    editForm = this.fb.group({
+        id: [],
+        nombre: [null, [Validators.required]]
+    });
+
+    constructor(protected clienteService: ClienteService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ cliente }) => {
+            this.updateForm(cliente);
             this.cliente = cliente;
+        });
+    }
+
+    updateForm(cliente: ICliente) {
+        this.editForm.patchValue({
+            id: cliente.id,
+            nombre: cliente.nombre
         });
     }
 
@@ -29,23 +42,33 @@ export class ClienteUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.cliente.id !== undefined) {
-            this.subscribeToSaveResponse(this.clienteService.update(this.cliente));
+        const cliente = this.createFromForm();
+        if (cliente.id !== undefined) {
+            this.subscribeToSaveResponse(this.clienteService.update(cliente));
         } else {
-            this.subscribeToSaveResponse(this.clienteService.create(this.cliente));
+            this.subscribeToSaveResponse(this.clienteService.create(cliente));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ICliente>>) {
+    private createFromForm(): ICliente {
+        const entity = {
+            ...new Cliente(),
+            id: this.editForm.get(['id']).value,
+            nombre: this.editForm.get(['nombre']).value
+        };
+        return entity;
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<ICliente>>) {
         result.subscribe((res: HttpResponse<ICliente>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 }

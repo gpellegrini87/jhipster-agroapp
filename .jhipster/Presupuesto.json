@@ -18,11 +18,11 @@
         },
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "proveedor",
             "otherEntityName": "proveedor",
+            "otherEntityRelationshipName": "presupuesto",
+            "relationshipName": "proveedor",
             "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "presupuesto"
+            "ownerSide": true
         }
     ],
     "changelogDate": "20181204120019",

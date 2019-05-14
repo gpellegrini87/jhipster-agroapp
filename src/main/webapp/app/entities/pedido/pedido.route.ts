@@ -17,7 +17,7 @@ import { IPedido } from 'app/shared/model/pedido.model';
 export class PedidoResolve implements Resolve<IPedido> {
     constructor(private service: PedidoService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Pedido> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IPedido> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class PedidoResolve implements Resolve<IPedido> {
 
 export const pedidoRoute: Routes = [
     {
-        path: 'pedido',
+        path: '',
         component: PedidoComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const pedidoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'pedido/:id/view',
+        path: ':id/view',
         component: PedidoDetailComponent,
         resolve: {
             pedido: PedidoResolve
@@ -56,7 +56,7 @@ export const pedidoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'pedido/new',
+        path: 'new',
         component: PedidoUpdateComponent,
         resolve: {
             pedido: PedidoResolve
@@ -68,7 +68,7 @@ export const pedidoRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'pedido/:id/edit',
+        path: ':id/edit',
         component: PedidoUpdateComponent,
         resolve: {
             pedido: PedidoResolve
@@ -83,7 +83,7 @@ export const pedidoRoute: Routes = [
 
 export const pedidoPopupRoute: Routes = [
     {
-        path: 'pedido/:id/delete',
+        path: ':id/delete',
         component: PedidoDeletePopupComponent,
         resolve: {
             pedido: PedidoResolve

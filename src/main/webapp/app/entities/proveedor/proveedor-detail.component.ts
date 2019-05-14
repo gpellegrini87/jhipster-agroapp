@@ -10,7 +10,7 @@ import { IProveedor } from 'app/shared/model/proveedor.model';
 export class ProveedorDetailComponent implements OnInit {
     proveedor: IProveedor;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ proveedor }) => {

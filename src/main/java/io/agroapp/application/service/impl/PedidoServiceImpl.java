@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Pedido.
+ * Service Implementation for managing {@link Pedido}.
  */
 @Service
 @Transactional
@@ -31,8 +31,8 @@ public class PedidoServiceImpl implements PedidoService {
     /**
      * Save a pedido.
      *
-     * @param pedido the entity to save
-     * @return the persisted entity
+     * @param pedido the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Pedido save(Pedido pedido) {
@@ -43,8 +43,8 @@ public class PedidoServiceImpl implements PedidoService {
     /**
      * Get all the pedidos.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -57,8 +57,8 @@ public class PedidoServiceImpl implements PedidoService {
     /**
      * Get one pedido by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class PedidoServiceImpl implements PedidoService {
     /**
      * Delete the pedido by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IPresupuesto[]>;
 export class PresupuestoService {
     public resourceUrl = SERVER_API_URL + 'api/presupuestos';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(presupuesto: IPresupuesto): Observable<EntityResponseType> {
         return this.http.post<IPresupuesto>(this.resourceUrl, presupuesto, { observe: 'response' });

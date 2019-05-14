@@ -17,7 +17,7 @@ import { ICliente } from 'app/shared/model/cliente.model';
 export class ClienteResolve implements Resolve<ICliente> {
     constructor(private service: ClienteService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cliente> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ICliente> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class ClienteResolve implements Resolve<ICliente> {
 
 export const clienteRoute: Routes = [
     {
-        path: 'cliente',
+        path: '',
         component: ClienteComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const clienteRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cliente/:id/view',
+        path: ':id/view',
         component: ClienteDetailComponent,
         resolve: {
             cliente: ClienteResolve
@@ -56,7 +56,7 @@ export const clienteRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cliente/new',
+        path: 'new',
         component: ClienteUpdateComponent,
         resolve: {
             cliente: ClienteResolve
@@ -68,7 +68,7 @@ export const clienteRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cliente/:id/edit',
+        path: ':id/edit',
         component: ClienteUpdateComponent,
         resolve: {
             cliente: ClienteResolve
@@ -83,7 +83,7 @@ export const clienteRoute: Routes = [
 
 export const clientePopupRoute: Routes = [
     {
-        path: 'cliente/:id/delete',
+        path: ':id/delete',
         component: ClienteDeletePopupComponent,
         resolve: {
             cliente: ClienteResolve

@@ -17,7 +17,7 @@ import { IProveedor } from 'app/shared/model/proveedor.model';
 export class ProveedorResolve implements Resolve<IProveedor> {
     constructor(private service: ProveedorService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Proveedor> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IProveedor> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class ProveedorResolve implements Resolve<IProveedor> {
 
 export const proveedorRoute: Routes = [
     {
-        path: 'proveedor',
+        path: '',
         component: ProveedorComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const proveedorRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'proveedor/:id/view',
+        path: ':id/view',
         component: ProveedorDetailComponent,
         resolve: {
             proveedor: ProveedorResolve
@@ -56,7 +56,7 @@ export const proveedorRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'proveedor/new',
+        path: 'new',
         component: ProveedorUpdateComponent,
         resolve: {
             proveedor: ProveedorResolve
@@ -68,7 +68,7 @@ export const proveedorRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'proveedor/:id/edit',
+        path: ':id/edit',
         component: ProveedorUpdateComponent,
         resolve: {
             proveedor: ProveedorResolve
@@ -83,7 +83,7 @@ export const proveedorRoute: Routes = [
 
 export const proveedorPopupRoute: Routes = [
     {
-        path: 'proveedor/:id/delete',
+        path: ':id/delete',
         component: ProveedorDeletePopupComponent,
         resolve: {
             proveedor: ProveedorResolve
